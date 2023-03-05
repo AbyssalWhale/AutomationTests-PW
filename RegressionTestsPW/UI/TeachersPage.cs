@@ -3,6 +3,8 @@ using TestsConfigurator_PW.Fixtures;
 
 namespace RegressionTests_PW.UI
 {
+    //[Parallelizable(ParallelScope.Children)]
+    //[TestFixture]
     public class TeachersPage : UITestsSuitFixture
     {
         [Test]

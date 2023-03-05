@@ -1,6 +1,7 @@
 ﻿using AutomationCore.AssertAndErrorMsgs.UI;
 using NUnit.Framework;
 using System.Configuration;
+using System.Xml;
 
 namespace AutomationCore.Managers
 {
@@ -9,6 +10,9 @@ namespace AutomationCore.Managers
         private static RunSettings? instance = null;
 
         public bool PublishToZephyr { get; set; }
+        public string ZephyrProjectKey { get; set; }
+        public string ZephyrUrl { get; set; }
+        public string ZephyrCycleID { get; set; }
         public string ZephyrToken { get; set; }
         public string AgentTestsResultsFolder { get; set; }
         public string BuildId { get; set; }
@@ -43,7 +47,10 @@ namespace AutomationCore.Managers
         private RunSettings()
         {
             bool.TryParse(TryToParseTestContext(nameof(PublishToZephyr)), out bool publishToZephyr);
+            ZephyrProjectKey = TryToParseTestContext(nameof(ZephyrProjectKey));
+            ZephyrUrl = TryToParseTestContext(nameof(ZephyrUrl));
             PublishToZephyr = publishToZephyr;
+            ZephyrCycleID = TryToParseTestContext(nameof(ZephyrCycleID));
             ZephyrToken = TryToParseTestContext(nameof(ZephyrToken));
             AgentTestsResultsFolder = TryToParseTestContext(nameof(AgentTestsResultsFolder));
             BuildId = TryToParseTestContext(nameof(BuildId));
