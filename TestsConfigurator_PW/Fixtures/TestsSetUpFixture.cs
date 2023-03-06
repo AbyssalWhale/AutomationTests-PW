@@ -5,12 +5,12 @@ using NUnit.Framework;
 
 namespace TestsConfigurator.Fixtures
 {
+    [SetUpFixture]
     public class TestsSetUpFixture
     {
         protected RunSettings? runSettings;
         protected PlaywrightManager? pwManager;
         protected ZephyrScaleApis? zephyrScaleApis;
-
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
