@@ -3,10 +3,10 @@ using AutomationCore_PW.Managers;
 using Core.Managers.ZephyrScale;
 using NUnit.Framework;
 
-namespace TestsConfigurator.Fixtures
+namespace Core.EnvPrep.ZephyrScale
 {
-    [SetUpFixture]
-    public class TestsSetUpFixture
+    [TestFixture]
+    public class TestsCyclesActions
     {
         protected RunSettings? runSettings;
         protected PlaywrightManager? pwManager;
@@ -20,10 +20,18 @@ namespace TestsConfigurator.Fixtures
             zephyrScaleApis = new ZephyrScaleApis(pwManager.GetPlaywright().Result, runSettings);
         }
 
-        [OneTimeTearDown]
-        public void RunAfterAnyTests()
+        [Test]
+        public async Task Create_TestCycle()
         {
+            var cycle = await zephyrScaleApis.CreateNewTestCycle();
+            runSettings.ZephyrCycleID = cycle.id.ToString();
+            runSettings.UpdatePropertyValueInConfigFile(updateProperty: nameof(runSettings.ZephyrCycleID), cycle.id.ToString());
+        }
 
+        [Test]
+        public async Task Complete_TestCycle()
+        {
+            await zephyrScaleApis.CompleteCurrentTestCycle();
         }
     }
 }

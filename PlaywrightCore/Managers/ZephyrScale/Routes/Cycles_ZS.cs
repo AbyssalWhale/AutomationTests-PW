@@ -1,4 +1,5 @@
 ﻿using AutomationCore.Managers;
+using Core.Models.ZephyrScale;
 using Core.Models.ZephyrScale.Cycles;
 using Core.Models.ZephyrScale.Folders;
 using Core.Models.ZephyrScale.TestExecutions.Statuses;
@@ -45,6 +46,42 @@ namespace Core.Managers.ZephyrScale.Routes
             {
                 throw new Exception("Error during parsing zephyr scale api response", ex);
             }
+        }
+
+        public async Task<CycleGetResponse> GetCycle(int id)
+        {
+            return  await GetZephyrAsync<CycleGetResponse>(newRouteURL: $"{routeURL}/{id}");
+        }
+
+        public async Task<IAPIResponse> UpdateCycle(CycleGetResponse cycle, StatusInfo status)
+        {
+            var request = playwright.APIRequest.NewContextAsync();
+            APIRequestContextOptions options = new APIRequestContextOptions();
+            options.Headers = ZephyrHeaders;
+            options.Params = ZephyrParams;
+
+            var requestBody = new
+            {
+                id = cycle.id,
+                key = cycle.key,
+                name = cycle.name,
+                project = new
+                {
+                    id = cycle.project.id,
+                    self = cycle.project.self,
+                },
+                status = new
+                {
+                    id = status.id,
+                },
+                folder = new
+                {
+                    id = cycle.folder.id,
+                }
+            };
+            options.DataObject = requestBody;
+
+            return await request.Result.PutAsync($"{runSettings.ZephyrUrl}{routeURL}/{cycle.id}", options);
         }
     }
 }

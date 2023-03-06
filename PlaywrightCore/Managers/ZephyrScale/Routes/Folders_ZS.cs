@@ -21,7 +21,7 @@ namespace Core.Managers.ZephyrScale.Routes
             {
                 { "folderType", folderType }
             };
-            var result = await GetZephyrAsync<FoldersResponse>(myParams);
+            var result = await GetZephyrAsync<FoldersResponse>(additionalParams: myParams);
             return result;
         }
 

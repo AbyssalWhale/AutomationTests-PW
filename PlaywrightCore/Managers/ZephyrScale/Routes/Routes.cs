@@ -28,7 +28,7 @@ namespace Core.Managers.ZephyrScale.Routes
             };
         }
 
-        public async Task<T> GetZephyrAsync<T>(Dictionary<string, object> additionalParams = null)
+        public async Task<T> GetZephyrAsync<T>(string newRouteURL = null, Dictionary<string, object> additionalParams = null)
         {
             var request = await playwright.APIRequest.NewContextAsync();
             APIRequestContextOptions options = new APIRequestContextOptions();
@@ -51,7 +51,8 @@ namespace Core.Managers.ZephyrScale.Routes
                 options.Params = combinedParams;
             }
 
-            var response = await request.GetAsync($"{runSettings.ZephyrUrl}{routeURL}", options);
+            var url_Suffix = newRouteURL ?? routeURL;
+            var response = await request.GetAsync($"{runSettings.ZephyrUrl}{url_Suffix}", options);
 
             try
             {

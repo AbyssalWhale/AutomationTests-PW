@@ -2,9 +2,8 @@
 
 namespace Core.Models.ZephyrScale.TestExecutions.Statuses
 {
-    public class StatusInfo
+    public class StatusInfo : StatusBase
     {
-        public int id { get; set; }
         public Project project { get; set; }
         public string name { get; set; }
         public object description { get; set; }
