@@ -80,5 +80,32 @@ namespace AutomationCore.Managers
 
             return value;
         }
+
+        public void UpdatePropertyValueInConfigFile(string updateProperty, string valueToSet)
+        {
+            var targetNodeName = updateProperty;
+            var configDir = Path.GetFullPath(@"..\..\..\..\") + "TestsConfigurator_PW\\RunSettings\\InstanceSettings.runsettings";
+            XmlDocument doc = new XmlDocument();
+            doc.Load(configDir);
+
+            XmlNodeList allParams = doc.SelectNodes("/RunSettings/TestRunParameters/Parameter");
+            foreach (XmlNode aNode in allParams)
+            {
+                XmlAttribute nodeNameAttr = aNode.Attributes["name"];
+                XmlAttribute nodeValueAttr = aNode.Attributes["value"];
+
+                if (nodeNameAttr != null && nodeNameAttr.Value.Equals(targetNodeName))
+                {
+                    string currentValue = nodeValueAttr.Value;
+
+                    if (!currentValue.Equals(valueToSet))
+                    {
+                        nodeValueAttr.Value = valueToSet;
+                    }
+                }
+            }
+
+            doc.Save(configDir);
+        }
     }
 }
