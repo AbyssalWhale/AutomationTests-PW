@@ -13,12 +13,12 @@ namespace TestsConfigurator.Fixtures
 
 
         [OneTimeSetUp]
-        public void RunBeforeAnyTests()
+        public async Task RunBeforeAnyTests()
         {
             runSettings = RunSettings.GetRunSettings;
             pwManager = new PlaywrightManager(runSettings);
-            zephyrScaleApis = new ZephyrScaleApis(runSettings);
-            zephyrScaleApis.CreateTestCycle();
+            zephyrScaleApis = new ZephyrScaleApis(pwManager.GetPlaywright().Result, runSettings);
+            await zephyrScaleApis.CreateTestCycle();
         }
 
         [OneTimeTearDown]

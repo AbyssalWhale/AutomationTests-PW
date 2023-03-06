@@ -8,7 +8,7 @@ namespace Core.Managers.ZephyrScale.Routes
 {
     public class Folders_ZS : Routes
     {
-        public Folders_ZS(RunSettings RunSettings) : base(RunSettings)
+        public Folders_ZS(IPlaywright Playwright, RunSettings RunSettings) : base(Playwright, RunSettings)
         {
         }
 
@@ -25,31 +25,9 @@ namespace Core.Managers.ZephyrScale.Routes
             return result;
         }
 
-        public FoldersResponse GetFolders_NotAsync(string folderType = "TEST_CYCLE")
-        {
-            var myParams = new Dictionary<string, string>()
-            {
-                { "folderType", folderType }
-            };
-            var result = GetZephyr<FoldersResponse>(myParams);
-            return result.Data;
-        }
-
         public async Task<FolderInfo> GetBranchFolder(string folderType = "TEST_CYCLE")
         {
             var folders = await GetFolders(folderType);
-            var result = folders.values.FirstOrDefault(f => f.name.ToLower().Equals(runSettings.Branch));
-            if (result is null)
-            {
-                throw new Exception($"Folder for branch '{runSettings.Branch}' is not found amoung folder types {folderType}.");
-            }
-
-            return result;
-        }
-
-        public FolderInfo GetBranchFolder_NotAsync(string folderType = "TEST_CYCLE")
-        {
-            var folders = GetFolders_NotAsync(folderType);
             var result = folders.values.FirstOrDefault(f => f.name.ToLower().Equals(runSettings.Branch));
             if (result is null)
             {

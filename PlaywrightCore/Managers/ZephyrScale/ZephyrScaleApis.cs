@@ -7,23 +7,25 @@ namespace Core.Managers.ZephyrScale
 {
     public class ZephyrScaleApis
     {
+        IPlaywright playwright;
         private RunSettings runSettings;
-        public Statuses_ZS TestExecutionsStatuses => new Statuses_ZS(runSettings); 
-        public Folders_ZS Folders => new Folders_ZS(runSettings);
-        public Cycles_ZS Cycles => new Cycles_ZS(runSettings);
+        public Statuses_ZS TestExecutionsStatuses => new Statuses_ZS(playwright, runSettings); 
+        public Folders_ZS Folders => new Folders_ZS(playwright, runSettings);
+        public Cycles_ZS Cycles => new Cycles_ZS(playwright, runSettings);
 
-        public ZephyrScaleApis(RunSettings runSettings)
+        public ZephyrScaleApis(IPlaywright Playwright, RunSettings RunSettings)
         {
-            this.runSettings = runSettings;
+            playwright = Playwright;
+            runSettings = RunSettings;
         }
 
-        public void CreateTestCycle()
+        public async Task CreateTestCycle()
         {
             if (runSettings.PublishToZephyr && runSettings.ZephyrCycleID.Equals("0"))
             {
-                var status = TestExecutionsStatuses.GetStatus_NotAsync();
-                var branchFolder = Folders.GetBranchFolder_NotAsync();
-                var testRunCycle = Cycles.CreateTestCycle_NotAsync(branchFolder, status);
+                var status = TestExecutionsStatuses.GetStatus().Result;
+                var branchFolder = Folders.GetBranchFolder().Result;
+                var testRunCycle = await Cycles.CreateTestCycle(branchFolder, status);
                 runSettings.ZephyrCycleID = testRunCycle.id.ToString();
                 runSettings.UpdatePropertyValueInConfigFile(updateProperty: "ZephyrCycleID", testRunCycle.id.ToString());
             }
