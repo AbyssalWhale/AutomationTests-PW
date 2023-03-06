@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ymlext\nukeeper.yml = ymlext\nukeeper.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "PlaywrightCore\Core.csproj", "{A7FFE99E-3670-47E0-9EC6-EAD020C870D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{A7FFE99E-3670-47E0-9EC6-EAD020C870D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegressionTests", "RegressionTestsPW\RegressionTests.csproj", "{D06BD64C-10DF-4541-82EE-DA896D28C8A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegressionTests", "RegressionTests\RegressionTests.csproj", "{D06BD64C-10DF-4541-82EE-DA896D28C8A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestsConfigurator", "TestsConfigurator_PW\TestsConfigurator.csproj", "{50BA5AA8-A177-4ADB-8B67-0A05DE912EF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestsConfigurator", "TestsConfigurator\TestsConfigurator.csproj", "{50BA5AA8-A177-4ADB-8B67-0A05DE912EF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
