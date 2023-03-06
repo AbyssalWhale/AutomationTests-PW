@@ -22,7 +22,7 @@
     <Parameter name="ZephyrCycleID" value="0" />
     <Parameter name="ZephyrCycleName" value="default" />
     <Parameter name="ZephyrUrl" value="https://api.zephyrscale.smartbear.com/v2/" />
-    <Parameter name="ZephyrToken" value="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjb250ZXh0Ijp7ImJhc2VVcmwiOiJodHRwczovL2F3b2hhLmF0bGFzc2lhbi5uZXQiLCJ1c2VyIjp7ImFjY291bnRJZCI6IjU1NzA1ODphOWE5NDU5ZC00YTE4LTQ3NzYtOGU5Mi04ZjhmNDI4MjEwNmQifX0sImlzcyI6ImNvbS5rYW5vYWgudGVzdC1tYW5hZ2VyIiwic3ViIjoiOGU3NDEzYjctMjA1Yy0zNmQ3LWJiMzctNWFlMTg2YTUxNDE5IiwiZXhwIjoxNzA5NTQ4NDkwLCJpYXQiOjE2NzgwMTI0OTB9.q4NQOojzEqX5DmeENbsCP7PV9WCXAumK3ptmStbhjss" />
+    <Parameter name="ZephyrToken" value="default" />
     <!--Agent-->
     <Parameter name="AgentTestsResultsFolder" value="default" />
   </TestRunParameters>

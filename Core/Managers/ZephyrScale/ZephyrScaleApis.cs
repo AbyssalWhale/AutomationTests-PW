@@ -27,7 +27,9 @@ namespace Core.Managers.ZephyrScale
             {
                 var status = TestExecutionsStatuses.GetStatus().Result;
                 var branchFolder = Folders.GetBranchFolder().Result;
-                return await Cycles.CreateTestCycle(branchFolder, status);
+                var result = await Cycles.CreateTestCycle(branchFolder, status);
+                await Console.Out.WriteLineAsync($"Created new Cycle ID: {result.id}");
+                return result;
             }
 
 
@@ -44,6 +46,7 @@ namespace Core.Managers.ZephyrScale
             var cycle = await Cycles.GetCycle(cycleId);
             var status = await TestExecutionsStatuses.GetStatus("Done");
             var cycleUpdateResponse = await Cycles.UpdateCycle(cycle, status);
+            await Console.Out.WriteLineAsync($"Completed Cycle ID: {cycleId}");
         }
     }
 }

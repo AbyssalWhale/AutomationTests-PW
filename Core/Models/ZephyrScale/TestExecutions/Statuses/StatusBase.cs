@@ -3,6 +3,6 @@
     public class StatusBase
     {
         public int id { get; set; }
-        public string self { get; set; }
+        public string? self { get; set; }
     }
 }
