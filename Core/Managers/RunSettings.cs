@@ -84,14 +84,15 @@ namespace Core.Managers
         public void UpdatePropertyValueInConfigFile(string updateProperty, string valueToSet)
         {
             var targetNodeName = updateProperty;
-            var configDir = Path.GetFullPath(@"..\..\..\..\") + "TestsConfigurator\\RunSettings\\InstanceSettings.runsettings";
-            if (!File.Exists(configDir))
+            var configPath = Path.GetFullPath(@"..\..\..\..\") + "TestsConfigurator\\RunSettings\\InstanceSettings.runsettings";
+            if (!File.Exists(configPath))
             {
-                throw new Exception($"Unable to locate .runsettings file in path: {configDir}");
+                throw new Exception($"Unable to locate .runsettings file in path: {configPath}");
             }
+            Console.WriteLine($"\n---Updating property: {updateProperty}---. \n---Value to set: {valueToSet}--\nConfig Path: {configPath}");
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(configDir);
+            doc.Load(configPath);
 
             XmlNodeList allParams = doc.SelectNodes("/RunSettings/TestRunParameters/Parameter");
             foreach (XmlNode aNode in allParams)
@@ -110,7 +111,7 @@ namespace Core.Managers
                 }
             }
 
-            doc.Save(configDir);
+            doc.Save(configPath);
         }
     }
 }
