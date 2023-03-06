@@ -29,7 +29,7 @@ namespace AutomationCore_PW.Managers
             return playwright;
         }
 
-        public async Task<IBrowserContext> GetTestContextPW()
+        public async Task<IBrowserContext> GetTest_PWContext()
         {   
             if (testsBrowsers.ContainsKey(TestContext.CurrentContext.Test.Name))
             {
@@ -43,7 +43,7 @@ namespace AutomationCore_PW.Managers
             return context;
         }
 
-        public async void ReleaseTestExecution()
+        public async Task ReleaseTestExecution()
         {
             if (Directory.Exists(runSettings.TestReportDirectory))
             {

@@ -1,6 +1,7 @@
 ﻿using AutomationCore.AssertAndErrorMsgs.UI;
 using NUnit.Framework;
 using System.Configuration;
+using System.Xml;
 
 namespace AutomationCore.Managers
 {
@@ -9,6 +10,9 @@ namespace AutomationCore.Managers
         private static RunSettings? instance = null;
 
         public bool PublishToZephyr { get; set; }
+        public string ZephyrProjectKey { get; set; }
+        public string ZephyrUrl { get; set; }
+        public string ZephyrCycleID { get; set; }
         public string ZephyrToken { get; set; }
         public string AgentTestsResultsFolder { get; set; }
         public string BuildId { get; set; }
@@ -43,7 +47,10 @@ namespace AutomationCore.Managers
         private RunSettings()
         {
             bool.TryParse(TryToParseTestContext(nameof(PublishToZephyr)), out bool publishToZephyr);
+            ZephyrProjectKey = TryToParseTestContext(nameof(ZephyrProjectKey));
+            ZephyrUrl = TryToParseTestContext(nameof(ZephyrUrl));
             PublishToZephyr = publishToZephyr;
+            ZephyrCycleID = TryToParseTestContext(nameof(ZephyrCycleID));
             ZephyrToken = TryToParseTestContext(nameof(ZephyrToken));
             AgentTestsResultsFolder = TryToParseTestContext(nameof(AgentTestsResultsFolder));
             BuildId = TryToParseTestContext(nameof(BuildId));
@@ -72,6 +79,33 @@ namespace AutomationCore.Managers
             if (value is null) throw UIAMessages.GetException($"'{settingName}' setting is not found"); 
 
             return value;
+        }
+
+        public void UpdatePropertyValueInConfigFile(string updateProperty, string valueToSet)
+        {
+            var targetNodeName = updateProperty;
+            var configDir = Path.GetFullPath(@"..\..\..\..\") + "TestsConfigurator_PW\\RunSettings\\InstanceSettings.runsettings";
+            XmlDocument doc = new XmlDocument();
+            doc.Load(configDir);
+
+            XmlNodeList allParams = doc.SelectNodes("/RunSettings/TestRunParameters/Parameter");
+            foreach (XmlNode aNode in allParams)
+            {
+                XmlAttribute nodeNameAttr = aNode.Attributes["name"];
+                XmlAttribute nodeValueAttr = aNode.Attributes["value"];
+
+                if (nodeNameAttr != null && nodeNameAttr.Value.Equals(targetNodeName))
+                {
+                    string currentValue = nodeValueAttr.Value;
+
+                    if (!currentValue.Equals(valueToSet))
+                    {
+                        nodeValueAttr.Value = valueToSet;
+                    }
+                }
+            }
+
+            doc.Save(configDir);
         }
     }
 }
