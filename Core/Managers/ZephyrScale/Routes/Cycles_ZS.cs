@@ -25,8 +25,8 @@ namespace Core.Managers.ZephyrScale.Routes
             var configToWrite = new
             {
                 projectKey = runSettings.ZephyrProjectKey,
-                name = $"{DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")} {runSettings.ZephyrCycleID}",
-                description = "Default Description",
+                name = $"{DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")} {runSettings.ZephyrCycleName}",
+                description = "Playwright pipeline run",
                 jiraProjectVersion = 0,
                 statusName = status.name,
                 folderId = folder.id
