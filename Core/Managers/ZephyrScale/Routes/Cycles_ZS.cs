@@ -25,7 +25,7 @@ namespace Core.Managers.ZephyrScale.Routes
             var configToWrite = new
             {
                 projectKey = runSettings.ZephyrProjectKey,
-                name = $"{DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")} {runSettings.ZephyrCycleName}",
+                name = $"🕵️‍♀️{DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")} 🏗️ {runSettings.ZephyrCycleName}",
                 description = $"Playwright tests execution. {runSettings.ZephyrCycleComment}",
                 jiraProjectVersion = 0,
                 statusName = status.name,
