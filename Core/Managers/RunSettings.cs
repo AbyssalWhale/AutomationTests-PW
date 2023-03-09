@@ -1,7 +1,8 @@
 ﻿using Core.AssertAndErrorMsgs.UI;
 using NUnit.Framework;
+using System.Collections.Concurrent;
 using System.Configuration;
-using System.Xml;
+using System.Xml.Linq;
 
 namespace Core.Managers
 {
@@ -13,6 +14,7 @@ namespace Core.Managers
         public string ZephyrProjectKey { get; set; }
         public string ZephyrUrl { get; set; }
         public string ZephyrCycleName { get; set; }
+        public string ZephyrCycleKey { get; set; }
         public string ZephyrCycleID { get; set; }
         public string ZephyrToken { get; set; }
         public string AgentTestsResultsFolder { get; set; }
@@ -51,6 +53,7 @@ namespace Core.Managers
             ZephyrUrl = TryToParseTestContext(nameof(ZephyrUrl));
             PublishToZephyr = publishToZephyr;
             ZephyrCycleName = TryToParseTestContext(nameof(ZephyrCycleName));
+            ZephyrCycleKey = TryToParseTestContext(nameof(ZephyrCycleKey));
             ZephyrCycleID = TryToParseTestContext(nameof(ZephyrCycleID));
             ZephyrToken = TryToParseTestContext(nameof(ZephyrToken));
             AgentTestsResultsFolder = TryToParseTestContext(nameof(AgentTestsResultsFolder));
@@ -81,37 +84,27 @@ namespace Core.Managers
             return value;
         }
 
-        public void UpdatePropertyValueInConfigFile(string updateProperty, string valueToSet)
+        public void UpdatePropertiesValueInConfigFile(ConcurrentDictionary<string, string> properties, string configName = "InstanceSettings.runsettings")
         {
-            var targetNodeName = updateProperty;
-            var configPath = Path.GetFullPath(@"..\..\..\..\") + "TestsConfigurator\\RunSettings\\InstanceSettings.runsettings";
+            var configPath = Path.Combine(Path.GetFullPath(@"..\..\..\..\"), "TestsConfigurator", "RunSettings", configName);
+
             if (!File.Exists(configPath))
             {
                 throw new Exception($"Unable to locate .runsettings file in path: {configPath}");
             }
-            Console.WriteLine($"\n---Updating property: {updateProperty}---. \n---Value to set: {valueToSet}--\nConfig Path: {configPath}");
 
-            XmlDocument doc = new XmlDocument();
-            doc.Load(configPath);
-
-            XmlNodeList allParams = doc.SelectNodes("/RunSettings/TestRunParameters/Parameter");
-            foreach (XmlNode aNode in allParams)
+            var doc = XDocument.Load(configPath);
+            foreach (var property in properties)
             {
-                XmlAttribute nodeNameAttr = aNode.Attributes["name"];
-                XmlAttribute nodeValueAttr = aNode.Attributes["value"];
+                var paramName = property.Key;
+                var paramValue = property.Value;
 
-                if (nodeNameAttr != null && nodeNameAttr.Value.Equals(targetNodeName))
+                var node = doc.Descendants("Parameter").SingleOrDefault(n => (string)n.Attribute("name") == paramName);
+                if (node != null)
                 {
-                    string currentValue = nodeValueAttr.Value;
-
-                    if (!currentValue.Equals(valueToSet))
-                    {
-                        nodeValueAttr.Value = valueToSet;
-                    }
+                    node.SetAttributeValue("value", paramValue);
                 }
             }
-
-            doc.Save(configPath);
         }
     }
 }

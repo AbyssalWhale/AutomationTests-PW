@@ -1,6 +1,7 @@
 ﻿using Core.Managers;
 using Core.Managers.ZephyrScale;
 using NUnit.Framework;
+using System.Collections.Concurrent;
 
 namespace Core.EnvPrep.ZephyrScale
 {
@@ -24,7 +25,10 @@ namespace Core.EnvPrep.ZephyrScale
         {
             var cycle = await zephyrScaleApis.CreateNewTestCycle();
             runSettings.ZephyrCycleID = cycle.id.ToString();
-            runSettings.UpdatePropertyValueInConfigFile(updateProperty: nameof(runSettings.ZephyrCycleID), cycle.id.ToString());
+            var configPropertiesToUpdate = new ConcurrentDictionary<string, string>();
+            configPropertiesToUpdate.TryAdd(nameof(runSettings.ZephyrCycleID), cycle.id.ToString());
+            configPropertiesToUpdate.TryAdd(nameof(runSettings.ZephyrCycleKey), cycle.key.ToString());
+            runSettings.UpdatePropertiesValueInConfigFile(configPropertiesToUpdate);
         }
 
         [Test]
