@@ -22,6 +22,7 @@
     <Parameter name="ZephyrCycleID" value="0" />
     <Parameter name="ZephyrCycleKey" value="0" />
     <Parameter name="ZephyrCycleName" value="default" />
+	<Parameter name="ZephyrCycleComment" value="default" />  
     <Parameter name="ZephyrUrl" value="https://api.zephyrscale.smartbear.com/v2/" />
     <Parameter name="ZephyrToken" value="default" />
     <!--Zephyr-->

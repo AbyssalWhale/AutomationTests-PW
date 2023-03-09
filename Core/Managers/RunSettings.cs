@@ -14,6 +14,7 @@ namespace Core.Managers
         public string ZephyrProjectKey { get; set; }
         public string ZephyrUrl { get; set; }
         public string ZephyrCycleName { get; set; }
+        public string ZephyrCycleComment { get; set; }
         public string ZephyrCycleKey { get; set; }
         public string ZephyrCycleID { get; set; }
         public string ZephyrToken { get; set; }
@@ -53,6 +54,7 @@ namespace Core.Managers
             ZephyrUrl = TryToParseTestContext(nameof(ZephyrUrl));
             PublishToZephyr = publishToZephyr;
             ZephyrCycleName = TryToParseTestContext(nameof(ZephyrCycleName));
+            ZephyrCycleComment = TryToParseTestContext(nameof(ZephyrCycleComment));
             ZephyrCycleKey = TryToParseTestContext(nameof(ZephyrCycleKey));
             ZephyrCycleID = TryToParseTestContext(nameof(ZephyrCycleID));
             ZephyrToken = TryToParseTestContext(nameof(ZephyrToken));
