@@ -105,6 +105,7 @@ namespace Core.Managers
                     node.SetAttributeValue("value", paramValue);
                 }
             }
+            doc.Save(configPath);
         }
     }
 }
