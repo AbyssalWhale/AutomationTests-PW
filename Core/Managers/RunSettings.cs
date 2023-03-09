@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System.Collections.Concurrent;
 using System.Configuration;
-using System.Xml;
+using System.Xml.Linq;
 
 namespace Core.Managers
 {
@@ -84,31 +84,27 @@ namespace Core.Managers
             return value;
         }
 
-        public void UpdatePropertiesValueInConfigFile(ConcurrentDictionary<string, string> properties)
+        public void UpdatePropertiesValueInConfigFile(ConcurrentDictionary<string, string> properties, string configName = "InstanceSettings.runsettings")
         {
-            var configPath = Path.GetFullPath(@"..\..\..\..\") + "TestsConfigurator\\RunSettings\\InstanceSettings.runsettings";
+            var configPath = Path.Combine(Path.GetFullPath(@"..\..\..\..\"), "TestsConfigurator", "RunSettings", configName);
+
             if (!File.Exists(configPath))
             {
                 throw new Exception($"Unable to locate .runsettings file in path: {configPath}");
             }
 
-            XmlDocument doc = new XmlDocument();
-            doc.Load(configPath);
-
-            XmlNodeList allParams = doc.SelectNodes("/RunSettings/TestRunParameters/Parameter");
-            foreach (XmlNode aNode in allParams)
+            var doc = XDocument.Load(configPath);
+            foreach (var property in properties)
             {
-                XmlAttribute nodeNameAttr = aNode.Attributes["name"];
-                XmlAttribute nodeValueAttr = aNode.Attributes["value"];
-                
+                var paramName = property.Key;
+                var paramValue = property.Value;
 
-                if (properties.ContainsKey(nodeNameAttr.Value))
+                var node = doc.Descendants("Parameter").SingleOrDefault(n => (string)n.Attribute("name") == paramName);
+                if (node != null)
                 {
-                    aNode.Attributes["value"].Value = properties[nodeNameAttr.Value];
+                    node.SetAttributeValue("value", paramValue);
                 }
             }
-
-            doc.Save(configPath);
         }
     }
 }
