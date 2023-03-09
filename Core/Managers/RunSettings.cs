@@ -1,5 +1,6 @@
 ﻿using Core.AssertAndErrorMsgs.UI;
 using NUnit.Framework;
+using System.Collections.Concurrent;
 using System.Configuration;
 using System.Xml;
 
@@ -13,6 +14,7 @@ namespace Core.Managers
         public string ZephyrProjectKey { get; set; }
         public string ZephyrUrl { get; set; }
         public string ZephyrCycleName { get; set; }
+        public string ZephyrCycleKey { get; set; }
         public string ZephyrCycleID { get; set; }
         public string ZephyrToken { get; set; }
         public string AgentTestsResultsFolder { get; set; }
@@ -51,6 +53,7 @@ namespace Core.Managers
             ZephyrUrl = TryToParseTestContext(nameof(ZephyrUrl));
             PublishToZephyr = publishToZephyr;
             ZephyrCycleName = TryToParseTestContext(nameof(ZephyrCycleName));
+            ZephyrCycleKey = TryToParseTestContext(nameof(ZephyrCycleKey));
             ZephyrCycleID = TryToParseTestContext(nameof(ZephyrCycleID));
             ZephyrToken = TryToParseTestContext(nameof(ZephyrToken));
             AgentTestsResultsFolder = TryToParseTestContext(nameof(AgentTestsResultsFolder));
@@ -81,15 +84,13 @@ namespace Core.Managers
             return value;
         }
 
-        public void UpdatePropertyValueInConfigFile(string updateProperty, string valueToSet)
+        public void UpdatePropertiesValueInConfigFile(ConcurrentDictionary<string, string> properties)
         {
-            var targetNodeName = updateProperty;
             var configPath = Path.GetFullPath(@"..\..\..\..\") + "TestsConfigurator\\RunSettings\\InstanceSettings.runsettings";
             if (!File.Exists(configPath))
             {
                 throw new Exception($"Unable to locate .runsettings file in path: {configPath}");
             }
-            Console.WriteLine($"\n---Updating property: {updateProperty}---. \n---Value to set: {valueToSet}--\nConfig Path: {configPath}");
 
             XmlDocument doc = new XmlDocument();
             doc.Load(configPath);
@@ -99,15 +100,11 @@ namespace Core.Managers
             {
                 XmlAttribute nodeNameAttr = aNode.Attributes["name"];
                 XmlAttribute nodeValueAttr = aNode.Attributes["value"];
+                
 
-                if (nodeNameAttr != null && nodeNameAttr.Value.Equals(targetNodeName))
+                if (properties.ContainsKey(nodeNameAttr.Value))
                 {
-                    string currentValue = nodeValueAttr.Value;
-
-                    if (!currentValue.Equals(valueToSet))
-                    {
-                        nodeValueAttr.Value = valueToSet;
-                    }
+                    aNode.Attributes["value"].Value = properties[nodeNameAttr.Value];
                 }
             }
 
