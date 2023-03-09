@@ -25,7 +25,6 @@ namespace Core.EnvPrep.ZephyrScale
         {
             var cycle = await zephyrScaleApis.CreateNewTestCycle();
             runSettings.ZephyrCycleID = cycle.id.ToString();
-            //runSettings.UpdatePropertyValueInConfigFile(updateProperty: nameof(runSettings.ZephyrCycleID), cycle.id.ToString());
             var configPropertiesToUpdate = new ConcurrentDictionary<string, string>();
             configPropertiesToUpdate.TryAdd(nameof(runSettings.ZephyrCycleID), cycle.id.ToString());
             configPropertiesToUpdate.TryAdd(nameof(runSettings.ZephyrCycleKey), cycle.key.ToString());
