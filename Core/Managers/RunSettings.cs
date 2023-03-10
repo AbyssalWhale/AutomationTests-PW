@@ -96,7 +96,7 @@ namespace Core.Managers
                     var paramName = property.Key;
                     var paramValue = property.Value;
 
-                    var node = doc.Descendants("Parameter").SingleOrDefault(n => (string)n.Attribute("name") == paramName);
+                    var node = doc.Descendants("Parameter").FirstOrDefault(n => (string)n.Attribute("name") == paramName);
                     if (node != null)
                     {
                         node.SetAttributeValue("value", paramValue);
