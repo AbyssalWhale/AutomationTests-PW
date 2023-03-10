@@ -78,9 +78,7 @@ namespace Core.Managers
 
         private static string TryToParseTestContext(string settingName)
         {
-            var value = TestContext.Parameters[settingName];
-
-            if (value is null) value = ConfigurationManager.AppSettings[settingName];
+            var value = TestContext.Parameters[settingName] ?? ConfigurationManager.AppSettings[settingName];
             if (value is null) throw UIAMessages.GetException($"'{settingName}' setting is not found"); 
 
             return value;
@@ -90,24 +88,25 @@ namespace Core.Managers
         {
             var configPath = Path.Combine(Path.GetFullPath(@"..\..\..\..\"), "TestsConfigurator", "RunSettings", configName);
 
-            if (!File.Exists(configPath))
+            if (File.Exists(configPath))
+            {
+                var doc = XDocument.Load(configPath);
+                foreach (var property in properties)
+                {
+                    var paramName = property.Key;
+                    var paramValue = property.Value;
+
+                    var node = doc.Descendants("Parameter").SingleOrDefault(n => (string)n.Attribute("name") == paramName);
+                    if (node != null)
+                    {
+                        node.SetAttributeValue("value", paramValue);
+                    }
+                }
+                doc.Save(configPath);
+            } else
             {
                 throw new Exception($"Unable to locate .runsettings file in path: {configPath}");
             }
-
-            var doc = XDocument.Load(configPath);
-            foreach (var property in properties)
-            {
-                var paramName = property.Key;
-                var paramValue = property.Value;
-
-                var node = doc.Descendants("Parameter").SingleOrDefault(n => (string)n.Attribute("name") == paramName);
-                if (node != null)
-                {
-                    node.SetAttributeValue("value", paramValue);
-                }
-            }
-            doc.Save(configPath);
         }
     }
 }
