@@ -28,7 +28,8 @@ namespace TestsConfigurator.Fixtures
             {
                 throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(Setup));
             }
-            var newHomePage = new HomePage(await pwManager.GetTest_PWContext().Result.NewPageAsync());
+            var newHomePage = new HomePage(await Task.FromResult(await pwManager.GetTest_PWContext().Result.NewPageAsync()));
+
 
             lock (this)
             {
