@@ -9,49 +9,49 @@ namespace TestsConfigurator.Fixtures
     [TestFixture]
     public class UITestsSuitFixture : TestsSetUpFixture
     {
-        private ConcurrentDictionary<string, HomePage>? homePages;
+        private ConcurrentDictionary<string, HomePage> homePages;
         protected HomePage? HomePage => homePages[TestContext.CurrentContext.Test.Name];
         
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
-            homePages = new ConcurrentDictionary<string, HomePage>();
+            homePages ??= new ConcurrentDictionary<string, HomePage>();
         }
 
         [SetUp]
-        public async Task Setup()
+        public async Task SetupAsync()
         {
             Directory.CreateDirectory(runSettings.TestsReportDirectory);
 
             if (pwManager is null)
             {
-                throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(Setup));
+                throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(SetupAsync));
             }
             var newHomePage = new HomePage(await Task.FromResult(await pwManager.GetTest_PWContext().Result.NewPageAsync()));
 
 
             if (homePages is null)
             {
-                throw UIAMessages.GetExceptionForNullObject(nameof(homePages), nameof(Setup));
+                throw UIAMessages.GetExceptionForNullObject(nameof(homePages), nameof(SetupAsync));
             }
 
             homePages.TryAdd(TestContext.CurrentContext.Test.Name, newHomePage);
 
             if (HomePage is null)
             {
-                throw UIAMessages.GetExceptionForNullObject(nameof(HomePage), nameof(Setup));
+                throw UIAMessages.GetExceptionForNullObject(nameof(HomePage), nameof(SetupAsync));
             }
 
             await HomePage.Navigate();
         }
 
         [TearDown] 
-        public async Task TearDown()
+        public async Task TearDownAsync()
         {
             if (pwManager is null)
             {
-                throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(Setup));
+                throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(SetupAsync));
             }
             await pwManager.ReleaseTestExecution();
         }
