@@ -17,7 +17,7 @@ namespace TestsConfigurator.Fixtures
         {
             runSettings = RunSettings.GetRunSettings;
             pwManager = new PlaywrightManager(runSettings);
-            zephyrScaleApis = new ZephyrScaleApis(pwManager.GetPlaywright().Result, runSettings);
+            zephyrScaleApis = new ZephyrScaleApis(await pwManager.GetPlaywright().ConfigureAwait(false), runSettings);
         }
 
         [OneTimeTearDown]

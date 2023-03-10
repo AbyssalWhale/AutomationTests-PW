@@ -35,29 +35,14 @@ namespace TestsConfigurator.Fixtures
             {
                 throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(SetupAsync));
             }
-            await pwManager.ReleaseTestExecution();
+            await pwManager.ReleaseTestExecution().ConfigureAwait(false);
         }
 
         private async Task InitTestHomePage()
         {
-            if (pwManager is null)
-            {
-                throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(SetupAsync));
-            }
-            var newHomePage = new HomePage(await Task.FromResult(await pwManager.GetTest_PWContext().Result.NewPageAsync()));
-
-
-            if (homePages is null)
-            {
-                throw UIAMessages.GetExceptionForNullObject(nameof(homePages), nameof(SetupAsync));
-            }
-
+            var context = await pwManager.GetTest_PWContext().ConfigureAwait(false);
+            var newHomePage = new HomePage(await context.NewPageAsync().ConfigureAwait(false));
             homePages.TryAdd(TestContext.CurrentContext.Test.Name, newHomePage);
-
-            if (HomePage is null)
-            {
-                throw UIAMessages.GetExceptionForNullObject(nameof(HomePage), nameof(SetupAsync));
-            }
         }
     }
 }
