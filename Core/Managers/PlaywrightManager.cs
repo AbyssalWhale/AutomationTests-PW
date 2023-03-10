@@ -7,38 +7,34 @@ namespace Core.Managers
 {
     public class PlaywrightManager
     {
+        private readonly Lazy<Task<IPlaywright>> playwrightTask;
         private RunSettings runSettings;
-        private IPlaywright? playwright;
         private ConcurrentDictionary<string, IBrowser>? testsBrowsers;
         private ConcurrentDictionary<string, IBrowserContext>? testsContexts;
 
         public PlaywrightManager(RunSettings RunSettings)
         {
             runSettings = RunSettings;
-            playwright = Playwright.CreateAsync().Result;
-            testsBrowsers = new ConcurrentDictionary<string, IBrowser>();
-            testsContexts = new ConcurrentDictionary<string, IBrowserContext>();
+            playwrightTask = new Lazy<Task<IPlaywright>>(() => Playwright.CreateAsync());
+            testsBrowsers ??= new ConcurrentDictionary<string, IBrowser>();
+            testsContexts ??= new ConcurrentDictionary<string, IBrowserContext>();
         }
 
         public async Task<IPlaywright> GetPlaywright()
         {
-            if (playwright is null)
-            {
-                playwright = await Playwright.CreateAsync();
-            }
-            return playwright;
+            return await playwrightTask.Value.ConfigureAwait(false);
         }
 
-        public async Task<IBrowserContext> GetTest_PWContext()
+        public async Task<IBrowserContext> GetTestContext()
         {   
             if (testsBrowsers.ContainsKey(TestContext.CurrentContext.Test.Name))
             {
                 return testsContexts[TestContext.CurrentContext.Test.Name];
             }
 
-            var browser = await InitTestBrowser();
+            var browser = await InitTestBrowser().ConfigureAwait(false);
             testsBrowsers.TryAdd(TestContext.CurrentContext.Test.Name, browser);
-            var context = await InitTestContext(browser);
+            var context = await InitTestContext(browser).ConfigureAwait(false);
             testsContexts.TryAdd(TestContext.CurrentContext.Test.Name, context);
             return context;
         }
@@ -48,13 +44,13 @@ namespace Core.Managers
             if (Directory.Exists(runSettings.TestReportDirectory))
             {
                 var allFiles = Directory.GetFiles(runSettings.TestReportDirectory);
-                Parallel.ForEach(allFiles, file => {
+                await Task.Run(() => Parallel.ForEach(allFiles, file => {
                     TestContext.AddTestAttachment(file);
-                });
+                })).ConfigureAwait(false);
             }
             
-            await testsContexts[TestContext.CurrentContext.Test.Name].CloseAsync();
-            await testsBrowsers[TestContext.CurrentContext.Test.Name].CloseAsync();
+            await testsContexts[TestContext.CurrentContext.Test.Name].CloseAsync().ConfigureAwait(false);
+            await testsBrowsers[TestContext.CurrentContext.Test.Name].CloseAsync().ConfigureAwait(false);
         }
 
         private async Task<IBrowser> InitTestBrowser()
@@ -83,7 +79,7 @@ namespace Core.Managers
             else
             {
                 var msg = $"Unknown browser is tried to be initialized: {browser}";
-                throw Core.AssertAndErrorMsgs.AEMessagesBase.GetException(msg);
+                throw AssertAndErrorMsgs.AEMessagesBase.GetException(msg);
             }
         }
 
