@@ -26,7 +26,7 @@ namespace Core.Managers
         public bool Headless { get; set; }
         public int ImplicitWait { get; set; }
         public string RunId { get; set; }
-        public string TestReportDirectory => TestsReportDirectory + TestContext.CurrentContext.Test.Name;
+        public string TestReportDirectory => $"{TestsReportDirectory}{TestContext.CurrentContext.Test.Name}";
         public string TestsReportDirectory { get; set; }
         public string ApiKey { get; set; }
         public string ApiToken { get; set; }
