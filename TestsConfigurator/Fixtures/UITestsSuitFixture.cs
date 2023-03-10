@@ -5,7 +5,7 @@ using TestsConfigurator_PW.Models.POM;
 
 namespace TestsConfigurator.Fixtures
 {
-    [Parallelizable(ParallelScope.Children)]
+    [Parallelizable(ParallelScope.All)]
     [TestFixture]
     public class UITestsSuitFixture : TestsSetUpFixture
     {
