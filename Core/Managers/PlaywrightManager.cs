@@ -1,6 +1,5 @@
 ﻿using Core.Enums;
 using Microsoft.Playwright;
-using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using System.Collections.Concurrent;
 
@@ -80,7 +79,7 @@ namespace Core.Managers
             else
             {
                 var msg = $"Unknown browser is tried to be initialized: {browser}";
-                throw Core.AssertAndErrorMsgs.AEMessagesBase.GetException(msg);
+                throw AssertAndErrorMsgs.AEMessagesBase.GetException(msg);
             }
         }
 
