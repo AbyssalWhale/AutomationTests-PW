@@ -24,6 +24,22 @@ namespace TestsConfigurator.Fixtures
         {
             Directory.CreateDirectory(runSettings.TestsReportDirectory);
 
+            await InitTestHomePage();
+            await HomePage.Navigate();
+        }
+
+        [TearDown] 
+        public async Task TearDownAsync()
+        {
+            if (pwManager is null)
+            {
+                throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(SetupAsync));
+            }
+            await pwManager.ReleaseTestExecution();
+        }
+
+        private async Task InitTestHomePage()
+        {
             if (pwManager is null)
             {
                 throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(SetupAsync));
@@ -42,18 +58,6 @@ namespace TestsConfigurator.Fixtures
             {
                 throw UIAMessages.GetExceptionForNullObject(nameof(HomePage), nameof(SetupAsync));
             }
-
-            await HomePage.Navigate();
-        }
-
-        [TearDown] 
-        public async Task TearDownAsync()
-        {
-            if (pwManager is null)
-            {
-                throw UIAMessages.GetExceptionForNullObject(nameof(pwManager), nameof(SetupAsync));
-            }
-            await pwManager.ReleaseTestExecution();
         }
     }
 }
