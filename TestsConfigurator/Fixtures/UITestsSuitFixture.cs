@@ -40,7 +40,7 @@ namespace TestsConfigurator.Fixtures
 
         private async Task InitTestHomePage()
         {
-            var context = await pwManager.GetTest_PWContext().ConfigureAwait(false);
+            var context = await pwManager.GetTestContext().ConfigureAwait(false);
             var newHomePage = new HomePage(await context.NewPageAsync().ConfigureAwait(false));
             homePages.TryAdd(TestContext.CurrentContext.Test.Name, newHomePage);
         }
