@@ -10,12 +10,11 @@ namespace TestsConfigurator_PW.Models.POM
 
         public PageBase(IPage page)
         {
-            this.Page = page;
+            Page = page;
         }
 
         public virtual async Task IsAtPage()
         {
-            Thread.Sleep(3000);
             await Assertions.Expect(Page).ToHaveTitleAsync(new Regex(Title));
         }
     }
