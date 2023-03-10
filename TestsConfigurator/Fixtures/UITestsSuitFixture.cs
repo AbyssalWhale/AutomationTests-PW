@@ -31,15 +31,12 @@ namespace TestsConfigurator.Fixtures
             var newHomePage = new HomePage(await Task.FromResult(await pwManager.GetTest_PWContext().Result.NewPageAsync()));
 
 
-            lock (this)
+            if (homePages is null)
             {
-                if (homePages is null)
-                {
-                    throw UIAMessages.GetExceptionForNullObject(nameof(homePages), nameof(Setup));
-                }
-
-                homePages.TryAdd(TestContext.CurrentContext.Test.Name, newHomePage);
+                throw UIAMessages.GetExceptionForNullObject(nameof(homePages), nameof(Setup));
             }
+
+            homePages.TryAdd(TestContext.CurrentContext.Test.Name, newHomePage);
 
             if (HomePage is null)
             {
