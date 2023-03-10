@@ -13,7 +13,7 @@ namespace TestsConfigurator.Fixtures
         protected ZephyrScaleApis? zephyrScaleApis;
 
         [OneTimeSetUp]
-        public async Task RunBeforeAnyTests()
+        public async Task GlobalOneTimeSetUpAsync()
         {
             runSettings = RunSettings.GetRunSettings;
             pwManager = new PlaywrightManager(runSettings);
@@ -21,7 +21,7 @@ namespace TestsConfigurator.Fixtures
         }
 
         [OneTimeTearDown]
-        public void RunAfterAnyTests()
+        public void GlobalOneTimETearDownAsync()
         {
 
         }
