@@ -7,10 +7,10 @@ namespace TestsConfigurator_PW.Models.POM
     {
         private const string AboutUs_Href = "pages/aboutus.html";
         private const string Teachers_Href = "pages/teachers.html";
-        private ILocator Button_AboutUs => Page.GetByRole(AriaRole.Link, new() { Name = "Більше о нас" });
-        private ILocator Button_Teachers => Page.GetByRole(AriaRole.Link, new() { Name = "Усі викладачі" });
+        private ILocator Button_AboutUs => Page.GetByRole(AriaRole.Link, new() { Name = "More about us" });
+        private ILocator Button_Teachers => Page.GetByText("All teachers");
 
-        public override string Title => "Головна сторінка";
+        public override string Title => "Main Page";
 
         public HomePage(IPage page) : base(page)
         {
