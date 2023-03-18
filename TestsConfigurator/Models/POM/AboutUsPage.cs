@@ -8,6 +8,6 @@ namespace TestsConfigurator_PW.Models.POM
         {
         }
 
-        public override string Title => "Наша Історія";
+        public override string Title => "Our history";
     }
 }
