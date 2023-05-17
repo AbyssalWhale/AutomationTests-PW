@@ -1,5 +1,4 @@
-﻿using Microsoft.Playwright;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TestsConfigurator.Fixtures;
 
 namespace RegressionTests.UI.HomePage

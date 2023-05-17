@@ -1,4 +1,5 @@
 ﻿using Core.AssertAndErrorMsgs.UI;
+using Microsoft.VisualStudio.TestPlatform.Common;
 using NUnit.Framework;
 using System.Collections.Concurrent;
 using System.Configuration;
@@ -26,7 +27,6 @@ namespace Core.Managers
         public bool Headless { get; set; }
         public int ImplicitWait { get; set; }
         public string RunId { get; set; }
-        public string TestReportDirectory => $"{TestsReportDirectory}{TestContext.CurrentContext.Test.Name}";
         public string TestsReportDirectory { get; set; }
         public string ApiKey { get; set; }
         public string ApiToken { get; set; }
@@ -45,6 +45,12 @@ namespace Core.Managers
                 }
                 return instance;
             }
+        }
+
+        public string TestReportDirectory()
+        {
+            var testDir = $"{TestsReportDirectory}{TestContext.CurrentContext.Test.Name}";
+            return testDir.Replace(@"""", "_");
         }
 
         private RunSettings()
