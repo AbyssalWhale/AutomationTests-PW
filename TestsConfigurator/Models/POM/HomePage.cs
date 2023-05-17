@@ -1,5 +1,6 @@
 ﻿using Core.Managers;
 using Microsoft.Playwright;
+using TestsConfigurator.Models.POM.components;
 
 namespace TestsConfigurator_PW.Models.POM
 {
@@ -10,11 +11,13 @@ namespace TestsConfigurator_PW.Models.POM
         private ILocator Button_AboutUs => Page.GetByRole(AriaRole.Link, new() { Name = "More about us" });
         private ILocator Button_Teachers => Page.GetByText("All teachers");
 
-        public override string Title => "Main Page";
+        public override string Title => "Vite + React + TS";
+
+        public SearchComponent Search => new SearchComponent(Page, "Search Games Component");
+        public TableComponent Table => new TableComponent(Page, "Game Table Component");
 
         public HomePage(IPage page) : base(page)
         {
-
         }
 
         public async Task<HomePage> Navigate()
