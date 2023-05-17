@@ -41,9 +41,9 @@ namespace Core.Managers
 
         public async Task ReleaseTestExecution()
         {
-            if (Directory.Exists(runSettings.TestReportDirectory))
+            if (Directory.Exists(runSettings.TestReportDirectory()))
             {
-                var allFiles = Directory.GetFiles(runSettings.TestReportDirectory);
+                var allFiles = Directory.GetFiles(runSettings.TestReportDirectory());
                 await Task.Run(() => Parallel.ForEach(allFiles, file => {
                     TestContext.AddTestAttachment(file);
                 })).ConfigureAwait(false);
@@ -87,7 +87,7 @@ namespace Core.Managers
         {
             var context = await browser.NewContextAsync(new()
             {
-                RecordVideoDir = runSettings.TestReportDirectory,
+                RecordVideoDir = runSettings.TestReportDirectory(),
                 RecordVideoSize = new RecordVideoSize() { Width = 1200, Height = 700 },
                 IsMobile = false,
             });

@@ -22,7 +22,12 @@ namespace TestsConfigurator.Fixtures
         [SetUp]
         public async Task SetupAsync()
         {
+            //var testDir = $"{runSettings.TestsReportDirectory}{TestContext.CurrentContext.Test.Name}";
+            //testDir = testDir.Replace(@"""", "_");
+            //Directory.CreateDirectory(testDir);
+
             Directory.CreateDirectory(runSettings.TestsReportDirectory);
+            
 
             await InitTestHomePage();
             await HomePage.Navigate();
