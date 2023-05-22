@@ -13,8 +13,10 @@ namespace TestsConfigurator_PW.Models.POM
 
         public override string Title => "Vite + React + TS";
 
-        public SearchComponent Search => new SearchComponent(Page, "Search Games Component");
-        public TableComponent Table => new TableComponent(Page, "Game Table Component");
+        public SearchComponent Search => new SearchComponent(Page, "Search Games");
+        public TableComponent Table => new TableComponent(Page, "Game Table");
+
+        public GenresComponent Genres => new GenresComponent(Page, "Genres Filter");
 
         public HomePage(IPage page) : base(page)
         {

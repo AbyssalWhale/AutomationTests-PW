@@ -13,7 +13,12 @@ namespace TestsConfigurator.Models.POM.components
 
         public async Task<IReadOnlyList<string>> Get_Cards_Titles()
         {
-            await Assertions.Expect(Page.Locator(Skeleton_Cards)).ToHaveCountAsync(0);
+            var isSkeletonVisible = await Page.Locator(Skeleton_Cards).IsVisibleAsync();
+            if (isSkeletonVisible)
+            {
+                await Assertions.Expect(Page.Locator(Skeleton_Cards)).ToHaveCountAsync(0);
+            }
+
             await Page.WaitForSelectorAsync(Title_Cards);
             var result = await Page.Locator(Title_Cards).AllInnerTextsAsync();
             return result;

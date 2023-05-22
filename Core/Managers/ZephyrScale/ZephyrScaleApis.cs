@@ -1,5 +1,4 @@
-﻿using Core.Managers;
-using Core.Managers.ZephyrScale.Routes;
+﻿using Core.Managers.ZephyrScale.Routes;
 using Core.Managers.ZephyrScale.Routes.TestExecutions;
 using Core.Models.ZephyrScale.Cycles;
 using Microsoft.Playwright;
