@@ -14,6 +14,8 @@ namespace TestsConfigurator.Models.POM.components
         {
             await Input_SearchGames.FillAsync(gameName);
             await Input_SearchGames.PressAsync("Enter");
+            await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
             return this;
         }
     }
