@@ -33,19 +33,5 @@ namespace TestsConfigurator_PW.Models.POM
 
             return this;
         }
-
-        public async Task<AboutUsPage> Click_AboutUs_Button()
-        {
-            await Assertions.Expect(Button_AboutUs).ToHaveAttributeAsync("href", AboutUs_Href);
-            await Button_AboutUs.ClickAsync();
-            return new AboutUsPage(Page);
-        }
-
-        public async Task<TeachersPage> Click_Tachers_Button()
-        {
-            await Assertions.Expect(Button_Teachers).ToHaveAttributeAsync("href", Teachers_Href);
-            await Button_Teachers.ClickAsync();
-            return new TeachersPage(Page);
-        }
     }
 }
