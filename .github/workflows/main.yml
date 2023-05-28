@@ -12,3 +12,4 @@ jobs:
         issues: read
         checks: write
         pull-requests: write
+    secrets: inherit
