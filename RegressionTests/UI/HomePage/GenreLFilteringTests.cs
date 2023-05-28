@@ -22,7 +22,6 @@ namespace RegressionTests.UI.HomePage
             Parallel.ForEach(gameTitles, gameTitle =>
             {
                 Assert.IsNotNull(genreUnderTest.games.Where(g => g.name.ToLower().Equals(gameTitle.ToLower())), "Expected game is found on UI after filtering by genre");
-                Console.WriteLine(gameTitle);
             });
         }
     }
