@@ -33,11 +33,11 @@ jobs:
     - name: Print out TestsConfigurator 
       shell: pwsh
       run: |
-        ls /home/runner/work/
+        ls ./automationtests
     - name: Update .runsettings
       shell: pwsh
       run: |
-        $filePathToTask = "/home/runner/work/game-store/game-store/automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        $filePathToTask = "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
         $xml = New-Object XML
         $xml.Load($filePathToTask)
         $xml.SelectSingleNode("//Parameter[@name='PublishToZephyr']").value="false"
@@ -53,10 +53,10 @@ jobs:
     - name: Run Tests
       shell: pwsh
       run: |
-        dotnet test /home/runner/work/game-store/game-store/automationtests/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=/home/runner/work/game-store/game-store/automationtests/dotnet-testResults/testResults.trx" --settings "/home/runner/work/game-store/game-store/automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        dotnet test ./automationtests/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=./automationtests/testResults/testResults.trx" --settings "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0
       with:
           check_name: DotNet Tests Results
           files: |
-           /home/runner/work/game-store/game-store/automationtests/dotnet-testResults/*.trx
+           ./automationtests/testResults/*.trx
