@@ -1,0 +1,14 @@
+name: Run Regresion Tests
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    
+jobs:
+  run-tests:
+    uses: ./.github/workflows/reusable-workflow.yml
+    permissions:
+        contents: read
+        issues: read
+        checks: write
+        pull-requests: write
