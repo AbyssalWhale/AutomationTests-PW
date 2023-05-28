@@ -5,7 +5,7 @@ on:
 
 jobs:
   dotnettests:
-    name: .NetTests
+    name: .Net Playwright Tests 
     runs-on: ubuntu-latest
     permissions:
         contents: read
@@ -60,4 +60,4 @@ jobs:
       with:
           check_name: DotNet Tests Results
           files: |
-           ./automationtests/testResults/testResults.trx
+           /home/runner/work/AutomationTests-PW/AutomationTests-PW/automationtests/testResults/testResults.trx
