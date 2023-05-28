@@ -46,7 +46,7 @@ jobs:
         $xml.SelectSingleNode("//Parameter[@name='AgentTestsResultsFolder']").value="default"
         $xml.SelectSingleNode("//Parameter[@name='Branch']").value="develop"
         $xml.SelectSingleNode("//Parameter[@name='ZephyrToken']").value="default"
-        $xml.SelectSingleNode("//Parameter[@name='ApiKey']").value="${{secrets.RAWG_KEY}}"
+        $xml.SelectSingleNode("//Parameter[@name='ApiKey']").value=${{secrets.RAWG_KEY}}
         $xml.SelectSingleNode("//Parameter[@name='ApiToken']").value="default"
         $xml.Save($filePathToTask)
         ${$filePathToTask}
@@ -60,4 +60,4 @@ jobs:
       with:
           check_name: DotNet Tests Results
           files: |
-           ./automationtests/testResults/*.trx
+           ./automationtests/testResults/testResults.trx
