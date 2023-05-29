@@ -8,7 +8,7 @@ jobs:
     name: .Net Playwright Tests 
     runs-on: ubuntu-latest
     env:
-      TESTS_RESULTS_FILE:  ${{ runner.temp }}/tests_results/testResults.trx
+      TESTS_RESULTS_FILE:  $runner.temp/tests_results/testResults.trx
     permissions:
         contents: read
         issues: read
