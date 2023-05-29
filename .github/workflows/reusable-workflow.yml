@@ -7,8 +7,6 @@ jobs:
   dotnettests_job:
     name: .Net Playwright Tests 
     runs-on: ubuntu-latest
-    env:
-      PLAYWRIGHT_PATH:  \home\runner\work\AutomationTests-PW\AutomationTests-PW\Core\bin\Release\net7.0\playwright.ps1
     permissions:
         contents: read
         issues: read
@@ -30,14 +28,10 @@ jobs:
       uses: EasyDesk/action-dotnet-build@v1.0.0
       with:
         path: $GITHUB_WORKSPACE
-    - name: Install Playwright 0
-      shell: pwsh
-      run: | 
-        ${env:PLAYWRIGHT_PATH} install
     - name: Install Playwright
       shell: pwsh
       run: |
-        ${env:GITHUB_WORKSPACE}\Core\bin\Release\net7.0\playwright.ps1 install
+         \home\runner\work\AutomationTests-PW\AutomationTests-PW\Core\bin\Release\net7.0\playwright.ps1 install
     - name: Update .runsettings
       shell: pwsh
       run: |
