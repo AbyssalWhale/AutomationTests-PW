@@ -50,7 +50,7 @@ jobs:
     - name: Run Tests
       shell: pwsh
       run: |
-        dotnet test ./automationtests/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=./automationtests/tests_results/testResults.trx" --settings "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        dotnet test ./automationtests/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=testResults.trx" --settings "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
     - name: Publish Test Results
       if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0
