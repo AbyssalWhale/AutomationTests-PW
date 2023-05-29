@@ -57,4 +57,4 @@ jobs:
       with:
           check_name: DotNet Tests Results
           files: |
-           ./automationtests/tests_results/testResults.trx
+           home/runner/work/*/*/**/*.trx
