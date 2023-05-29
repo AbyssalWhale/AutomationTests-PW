@@ -31,7 +31,7 @@ jobs:
       with:
         path: $GITHUB_WORKSPACE
     - name: Install Playwright 0
-      run: ${env:PLAYWRIGHT_PATH} install
+      run: ${env:PLAYWRIGHT_PATH}
       shell: pwsh
     - name: Install Playwright
       shell: pwsh
