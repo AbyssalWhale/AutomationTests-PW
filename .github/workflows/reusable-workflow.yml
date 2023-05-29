@@ -26,7 +26,7 @@ jobs:
     - name: .Net Build
       uses: EasyDesk/action-dotnet-build@v1.0.0
       with:
-        path: $GITHUB_WORKSPACE
+        path: './automationtests'
     - name: Install Playwright
       shell: pwsh
       run: |
