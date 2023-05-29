@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REPO_NAME: AbyssalWhale/AutomationTests-PW
-      PROJECT_PATH: ./dotnet_tests/
-      TESTS_RESULTS_FILE: $PROJECT_PATH/tests_results/testResults.trx
+      PROJECT_PATH: $GITHUB_WORKSPACE
+      TESTS_RESULTS_FILE: $PROJECT_PATH + "/tests_results/testResults.trx"
     permissions:
         contents: read
         issues: read
