@@ -8,7 +8,7 @@ jobs:
     name: .Net Playwright Tests 
     runs-on: ubuntu-latest
     env:
-      TESTS_RESULTS_FILE: $PROJECT_PATH + "/tests_results/testResults.trx"
+      TESTS_RESULTS_FILE:  "${{env.GITHUB_WORKSPACE}}/tests_results/testResults.trx"
     permissions:
         contents: read
         issues: read
@@ -19,6 +19,9 @@ jobs:
       uses: actions/checkout@v2
     - name: "Print out Workspace"
       run: ls $GITHUB_WORKSPACE
+    - name: Use variables
+      run: |
+        echo "test result path: $TESTS_RESULTS_FILE"
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
@@ -30,7 +33,7 @@ jobs:
     - name: Install Playwright
       shell: pwsh
       run: |
-        $env:GITHUB_WORKSPACE/Core/bin/Release/net7.0/playwright.ps1 install
+        ${{vars.GITHUB_WORKSPACE}}/Core/bin/Release/net7.0/playwright.ps1 install
     - name: Update .runsettings
       shell: pwsh
       run: |
