@@ -22,9 +22,6 @@ jobs:
     - name: Use variables
       run: |
         echo "test result path: $TESTS_RESULTS_FILE"
-    - name: Display GITHUB WORKSPACE 
-      run: echo ${env:GITHUB_WORKSPACE}
-      shell: pwsh
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
@@ -33,6 +30,9 @@ jobs:
       uses: EasyDesk/action-dotnet-build@v1.0.0
       with:
         path: $GITHUB_WORKSPACE
+    - name: Install Playwright 0
+      run: ${env:GITHUB_WORKSPACE}\Core\bin\Release\net7.0\playwright.ps1 install
+      shell: pwsh
     - name: Install Playwright
       shell: pwsh
       run: |
