@@ -4,7 +4,10 @@ on:
   workflow_call:
 
 jobs:
-  dotnettests:
+  dotnettests_job:
+    env:
+      PROJECT_PATH: "$GITHUB_WORKSPACE/dotnet_tests/"
+      TESTS_RESULTS_FILE: "$PROJECT_PATH/tests_results/testResults.trx"
     name: .Net Playwright Tests 
     runs-on: ubuntu-latest
     permissions:
@@ -17,7 +20,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: AbyssalWhale/AutomationTests-PW
-        path: './automationtests'
+        path: $PROJECT_PATH
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
@@ -25,11 +28,11 @@ jobs:
     - name: .Net Build
       uses: EasyDesk/action-dotnet-build@v1.0.0
       with:
-        path: './automationtests'
+        path: $PROJECT_PATH
     - name: Install Playwright
       shell: pwsh
       run: |
-        .\automationtests\Core\bin\Release\net7.0\playwright.ps1 install
+        $PROJECT_PATH/Core/bin/Release/net7.0/playwright.ps1 install
     - name: Print out GITHUB WORKSPACE 
       shell: pwsh
       run: |
@@ -37,7 +40,7 @@ jobs:
     - name: Update .runsettings
       shell: pwsh
       run: |
-        $filePathToTask = "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        $filePathToTask = "$PROJECT_PATH/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
         $xml = New-Object XML
         $xml.Load($filePathToTask)
         $xml.SelectSingleNode("//Parameter[@name='PublishToZephyr']").value="false"
@@ -53,11 +56,11 @@ jobs:
     - name: Run Tests
       shell: pwsh
       run: |
-        dotnet test ./automationtests/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=/home/runner/work/AutomationTests-PW/AutomationTests-PW/automationtests/testResults/testResults.trx" --settings "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        dotnet test $PROJECT_PATH/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=$TESTS_RESULTS_FILE" --settings "$PROJECT_PATH/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
     - name: Publish Test Results
       if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0
       with:
           check_name: DotNet Tests Results
           files: |
-           /home/runner/work/AutomationTests-PW/AutomationTests-PW/automationtests/testResults/testResults.trx
+           $TESTS_RESULTS_FILE
