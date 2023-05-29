@@ -30,7 +30,7 @@ jobs:
     - name: Install Playwright
       shell: pwsh
       run: |
-        {{ $vars.GITHUB_WORKSPACE }}/Core/bin/Release/net7.0/playwright.ps1 install
+        {$env:GITHUB_WORKSPACE}/Core/bin/Release/net7.0/playwright.ps1 install
     - name: Update .runsettings
       shell: pwsh
       run: |
