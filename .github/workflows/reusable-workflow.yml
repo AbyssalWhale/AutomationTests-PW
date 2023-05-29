@@ -8,7 +8,7 @@ jobs:
     name: .Net Playwright Tests 
     runs-on: ubuntu-latest
     env:
-      TESTS_RESULTS_FILE:  ${env.GITHUB_WORKSPACE}/tests_results/testResults.trx
+      PLAYWRIGHT_PATH:  \home\runner\work\AutomationTests-PW\AutomationTests-PW\Core\bin\Release\net7.0\playwright.ps1
     permissions:
         contents: read
         issues: read
@@ -31,7 +31,7 @@ jobs:
       with:
         path: $GITHUB_WORKSPACE
     - name: Install Playwright 0
-      run: ${env:GITHUB_WORKSPACE}\Core\bin\Release\net7.0\playwright.ps1
+      run: ${env:PLAYWRIGHT_PATH} install
       shell: pwsh
     - name: Install Playwright
       shell: pwsh
