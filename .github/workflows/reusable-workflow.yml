@@ -8,9 +8,9 @@ jobs:
     name: .Net Playwright Tests 
     runs-on: ubuntu-latest
     env:
-      REPO_NAME: "AbyssalWhale/AutomationTests-PW"
-      PROJECT_PATH: "./dotnet_tests/"
-      TESTS_RESULTS_FILE: "$PROJECT_PATH/tests_results/testResults.trx"
+      REPO_NAME: AbyssalWhale/AutomationTests-PW
+      PROJECT_PATH: ./dotnet_tests/
+      TESTS_RESULTS_FILE: $PROJECT_PATH/tests_results/testResults.trx
     permissions:
         contents: read
         issues: read
@@ -20,7 +20,6 @@ jobs:
     - name: Checkout DotNet Tests
       uses: actions/checkout@v2
       with:
-        repository: AbyssalWhale/AutomationTests-PW
         path: $PROJECT_PATH
     - name: "Print out varriables values"
       run: echo "PROJECT PATH - $PROJECT_PATH AND - TESTS RESULTS FILE $TESTS_RESULTS_FILE"
