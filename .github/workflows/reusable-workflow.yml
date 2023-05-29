@@ -30,10 +30,10 @@ jobs:
       shell: pwsh
       run: |
         .\automationtests\Core\bin\Release\net7.0\playwright.ps1 install
-    - name: Print out TestsConfigurator 
+    - name: Print out GITHUB WORKSPACE 
       shell: pwsh
       run: |
-        ls ./automationtests
+        ls $GITHUB_WORKSPACE
     - name: Update .runsettings
       shell: pwsh
       run: |
