@@ -31,7 +31,7 @@ jobs:
       with:
         path: $GITHUB_WORKSPACE
     - name: Install Playwright 0
-      run: ${env:GITHUB_WORKSPACE}\Core\bin\Release\net7.0\playwright.ps1 install
+      run: ${env:GITHUB_WORKSPACE}\Core\bin\Release\net7.0\playwright.ps1
       shell: pwsh
     - name: Install Playwright
       shell: pwsh
