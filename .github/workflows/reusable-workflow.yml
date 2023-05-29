@@ -19,8 +19,11 @@ jobs:
     - name: Checkout DotNet Tests
       uses: actions/checkout@v2
       with:
-        repository: AbyssalWhale/AutomationTests-PW
         path: $PROJECT_PATH
+    - name: Print out PROJECT PATH
+      shell: pwsh
+      run: |
+        ls $PROJECT_PATH
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
@@ -33,10 +36,6 @@ jobs:
       shell: pwsh
       run: |
         $PROJECT_PATH/Core/bin/Release/net7.0/playwright.ps1 install
-    - name: Print out GITHUB WORKSPACE 
-      shell: pwsh
-      run: |
-        ls $GITHUB_WORKSPACE
     - name: Update .runsettings
       shell: pwsh
       run: |
