@@ -34,7 +34,7 @@ jobs:
     - name: Update .runsettings
       shell: pwsh
       run: |
-        $filePathToTask = ".\automationtests\TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        $filePathToTask = "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
         $xml = New-Object XML
         $xml.Load($filePathToTask)
         $xml.SelectSingleNode("//Parameter[@name='PublishToZephyr']").value="false"
