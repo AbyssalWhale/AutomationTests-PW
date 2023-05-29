@@ -22,6 +22,9 @@ jobs:
     - name: Use variables
       run: |
         echo "test result path: $TESTS_RESULTS_FILE"
+    - name: Display GITHUB WORKSPACE 
+      run: echo ${env:GITHUB_WORKSPACE}
+      shell: pwsh
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
