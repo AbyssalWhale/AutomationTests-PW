@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  dotnettests:
+  dotnettests_job:
     name: .Net Playwright Tests 
     runs-on: ubuntu-latest
     permissions:
@@ -16,8 +16,9 @@ jobs:
     - name: Checkout DotNet Tests
       uses: actions/checkout@v2
       with:
-        repository: AbyssalWhale/AutomationTests-PW
         path: './automationtests'
+    - name: "Print out Workspace"
+      run: ls $GITHUB_WORKSPACE
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
@@ -29,11 +30,7 @@ jobs:
     - name: Install Playwright
       shell: pwsh
       run: |
-        .\automationtests\Core\bin\Release\net7.0\playwright.ps1 install
-    - name: Print out TestsConfigurator 
-      shell: pwsh
-      run: |
-        ls ./automationtests
+         .\automationtests\Core\bin\Release\net7.0\playwright.ps1 install
     - name: Update .runsettings
       shell: pwsh
       run: |
@@ -53,11 +50,11 @@ jobs:
     - name: Run Tests
       shell: pwsh
       run: |
-        dotnet test ./automationtests/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=/home/runner/work/AutomationTests-PW/AutomationTests-PW/automationtests/testResults/testResults.trx" --settings "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        dotnet test ./automationtests/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=testResults.trx" --settings "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
     - name: Publish Test Results
       if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0
       with:
           check_name: DotNet Tests Results
           files: |
-           /home/runner/work/AutomationTests-PW/AutomationTests-PW/automationtests/testResults/testResults.trx
+           /home/runner/work/AutomationTests-PW/AutomationTests-PW/TestResults/testResults.trx
