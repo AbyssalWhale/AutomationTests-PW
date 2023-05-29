@@ -19,16 +19,14 @@ jobs:
     steps:
     - name: Checkout DotNet Tests
       uses: actions/checkout@v2
-      with:
-        path: $PROJECT_PATH
     - name: "Print out varriables values"
-      run: echo "PROJECT PATH - $PROJECT_PATH AND - TESTS RESULTS FILE $TESTS_RESULTS_FILE"
+      run: echo $$GITHUB_WORKSPACE
     - name: "Print out PROJECT PATH"
-      run: ls "$PROJECT_PATH"
+      run: ls $GITHUB_WORKSPACE
     - name: Print out PROJECT PATH
       shell: pwsh
       run: |
-        ls $PROJECT_PATH
+        ls $GITHUB_WORKSPACE
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
@@ -36,7 +34,7 @@ jobs:
     - name: .Net Build
       uses: EasyDesk/action-dotnet-build@v1.0.0
       with:
-        path: $PROJECT_PATH
+        path: $GITHUB_WORKSPACE
     - name: Install Playwright
       shell: pwsh
       run: |
