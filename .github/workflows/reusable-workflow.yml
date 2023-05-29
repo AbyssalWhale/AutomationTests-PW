@@ -8,8 +8,6 @@ jobs:
     name: .Net Playwright Tests 
     runs-on: ubuntu-latest
     env:
-      REPO_NAME: AbyssalWhale/AutomationTests-PW
-      PROJECT_PATH: $GITHUB_WORKSPACE
       TESTS_RESULTS_FILE: $PROJECT_PATH + "/tests_results/testResults.trx"
     permissions:
         contents: read
@@ -19,14 +17,8 @@ jobs:
     steps:
     - name: Checkout DotNet Tests
       uses: actions/checkout@v2
-    - name: "Print out varriables values"
-      run: echo $$GITHUB_WORKSPACE
-    - name: "Print out PROJECT PATH"
+    - name: "Print out Workspace"
       run: ls $GITHUB_WORKSPACE
-    - name: Print out PROJECT PATH
-      shell: pwsh
-      run: |
-        ls $GITHUB_WORKSPACE
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
@@ -38,11 +30,11 @@ jobs:
     - name: Install Playwright
       shell: pwsh
       run: |
-        $PROJECT_PATH/Core/bin/Release/net7.0/playwright.ps1 install
+        $GITHUB_WORKSPACE/Core/bin/Release/net7.0/playwright.ps1 install
     - name: Update .runsettings
       shell: pwsh
       run: |
-        $filePathToTask = "$PROJECT_PATH/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        $filePathToTask = "$GITHUB_WORKSPACE/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
         $xml = New-Object XML
         $xml.Load($filePathToTask)
         $xml.SelectSingleNode("//Parameter[@name='PublishToZephyr']").value="false"
@@ -58,11 +50,11 @@ jobs:
     - name: Run Tests
       shell: pwsh
       run: |
-        dotnet test $PROJECT_PATH/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=$TESTS_RESULTS_FILE" --settings "$PROJECT_PATH/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        dotnet test $GITHUB_WORKSPACE/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=$GITHUB_WORKSPACE/tests_results/testResults.trx" --settings "$PROJECT_PATH/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
     - name: Publish Test Results
       if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0
       with:
           check_name: DotNet Tests Results
           files: |
-           $TESTS_RESULTS_FILE
+           $GITHUB_WORKSPACE/tests_results/testResults.trx
