@@ -6,6 +6,7 @@ on:
     
 jobs:
   run-tests:
+    name: .Net Playwright Tests
     uses: ./.github/workflows/reusable-workflow.yml
     with:
         check-out-path: ./dotnet-playwright
