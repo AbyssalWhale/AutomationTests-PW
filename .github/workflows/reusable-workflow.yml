@@ -9,7 +9,7 @@ on:
 
 jobs:
   dotnettests_job:
-    name: 🔻⏭️🏗️ ⏭️ 🕵️‍♀️ ⏭️ 🧪 
+    name: 🔻⏭️🔧⏭️🏗️ ⏭️ 🕵️‍♀️ ⏭️ 🧪 
     env:
       tests_result_dir: ${{ inputs.check-out-path }}/testResults
     runs-on: ubuntu-latest
@@ -24,24 +24,24 @@ jobs:
       with:
         repository: AbyssalWhale/AutomationTests-PW
         path: ${{ inputs.check-out-path }}
-    - name: "Print out Workspace"
+    - name: 🔧 "Print out Workspace"
       run: |
         echo "Check out path: ${{ toJSON(inputs.check-out-path) }}"
         echo "-Check out content-"
         ls ${{ inputs.check-out-path }}
-    - name: Setup .NET Core SDK
+    - name: 🔧 Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
-    - name: Setup NuGet.exe for use with actions
+    - name: 🔧 Setup NuGet.exe for use with actions
       uses: NuGet/setup-nuget@v1.2.0
     - name: 🏗️ Build
       uses: EasyDesk/action-dotnet-build@v1.0.0
       with:
         path: ${{ inputs.check-out-path }}/
-    - name: Install Playwright
+    - name: 🔧 Install Playwright
       shell: pwsh
       run: |
          ${{ inputs.check-out-path }}\Core\bin\Release\net7.0\playwright.ps1 install
-    - name: Update .runsettings
+    - name: 🔧 Update .runsettings
       shell: pwsh
       run: |
         $filePathToTask = "${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
@@ -61,10 +61,10 @@ jobs:
       shell: pwsh
       run: |
         dotnet test ${{ inputs.check-out-path }}/RegressionTests/bin/Release/net7.0/RegressionTests.dll --results-directory ${{ env.tests_result_dir }}/ --logger "trx;logfilename=testResults.trx" --settings "${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
-    - name: 🧪 Publish Test Results
+    - name: 🧪 Publish Tests Results
       if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0
       with:
-          check_name: .Net 🧪
+          check_name: 🧪 .Net Tests Results 
           files: |
            ${{ env.tests_result_dir }}/testResults.trx
