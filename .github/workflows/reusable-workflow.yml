@@ -9,7 +9,7 @@ on:
 
 jobs:
   dotnettests_job:
-    name: Check Out Build Run Publish
+    name: 🏗️
     env:
       tests_result_dir: ${{ inputs.check-out-path }}/testResults
     runs-on: ubuntu-latest
