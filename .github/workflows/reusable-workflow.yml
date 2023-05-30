@@ -2,10 +2,16 @@ name: Reusable workflow
 
 on:
   workflow_call:
+    inputs:
+      check-out-path:
+        required: true
+        type: string
 
 jobs:
   dotnettests_job:
-    name: .Net Playwright Tests 
+    name: .Net Playwright Tests
+    env:
+      tests_result_dir: ${{ inputs.check-out-path }}/testResults
     runs-on: ubuntu-latest
     permissions:
         contents: read
@@ -16,9 +22,13 @@ jobs:
     - name: Checkout DotNet Tests
       uses: actions/checkout@v2
       with:
-        path: './automationtests'
+        repository: AbyssalWhale/python-pw
+        path: ${{ inputs.check-out-path }}
     - name: "Print out Workspace"
-      run: ls $GITHUB_WORKSPACE
+      run: |
+        echo "Check out path: ${{ toJSON(inputs.check-out-path) }}"
+        echo "-Check out content-"
+        ls ${{ inputs.check-out-path }}
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v3.1.0
     - name: Setup NuGet.exe for use with actions
@@ -34,7 +44,7 @@ jobs:
     - name: Update .runsettings
       shell: pwsh
       run: |
-        $filePathToTask = "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        $filePathToTask = "${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
         $xml = New-Object XML
         $xml.Load($filePathToTask)
         $xml.SelectSingleNode("//Parameter[@name='PublishToZephyr']").value="false"
@@ -50,11 +60,11 @@ jobs:
     - name: Run Tests
       shell: pwsh
       run: |
-        dotnet test ./automationtests/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=testResults.trx" --settings "./automationtests/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        dotnet test ${{ inputs.check-out-path }}/RegressionTests/bin/Release/net7.0/RegressionTests.dll --logger "trx;logfilename=${{ env.tests_result_dir }}/testResults.trx" --settings "${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
     - name: Publish Test Results
       if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0
       with:
           check_name: DotNet Tests Results
           files: |
-           /home/runner/work/AutomationTests-PW/AutomationTests-PW/TestResults/testResults.trx
+           ${{ env.tests_result_dir }}/testResults.trx
