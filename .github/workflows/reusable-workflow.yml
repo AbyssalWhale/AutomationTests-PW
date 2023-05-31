@@ -9,16 +9,13 @@ on:
       branch:
         required: true
         type: string
-      zephyr-IsPublishResults:
+      zephyr-is-publishresults:
         required: false
         type: string
-      zephyr-ProjectKey:
+      zephyr-cycle-name:
         required: false
         type: string
-      zephyr-CycleName:
-        required: false
-        type: string
-      zephyr-CycleComment:
+      zephyr-cycle-comment:
         required: false
         type: string
     secrets:
@@ -30,7 +27,9 @@ on:
         required: true
       instance-backend-api-token:
         required: true
-      zephyr-Token:
+      zephyr-token:
+        required: false
+      zephyr-projectKey:
         required: false
 
 jobs:
@@ -78,10 +77,11 @@ jobs:
         ${{secrets.instance-backend-url}} 
         ${{secrets.instance-backend-api-key}} 
         ${{secrets.instance-backend-api-key}} 
-        ${{inputs.zephyr-IsPublishResults}}
-        ${{inputs.zephyr-ProjectKey}}
-        ${{inputs.zephyr-CycleName}}
+        ${{inputs.zephyr-is-publishresults}}
+        ${{secrets.zephyr-projectKey}}
+        ${{inputs.zephyr-cycle-name}}
         ${{inputs.zephyr-CycleComment}}
+        ${{inputs.zephyr-token}}
     - name: 🕵️‍♀️ Run Tests
       shell: pwsh
       run: |
