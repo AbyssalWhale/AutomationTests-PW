@@ -44,19 +44,7 @@ jobs:
     - name: 🔧 Update .runsettings
       shell: pwsh
       run: |
-        $filePathToTask = "${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
-        $xml = New-Object XML
-        $xml.Load($filePathToTask)
-        $xml.SelectSingleNode("//Parameter[@name='PublishToZephyr']").value="false"
-        $xml.SelectSingleNode("//Parameter[@name='ZephyrCycleName']").value="default"
-        $xml.SelectSingleNode("//Parameter[@name='ZephyrCycleComment']").value="default"
-        $xml.SelectSingleNode("//Parameter[@name='AgentTestsResultsFolder']").value="default"
-        $xml.SelectSingleNode("//Parameter[@name='Branch']").value="develop"
-        $xml.SelectSingleNode("//Parameter[@name='ZephyrToken']").value="default"
-        $xml.SelectSingleNode("//Parameter[@name='ApiKey']").value="${{secrets.RAWG_KEY}}"
-        $xml.SelectSingleNode("//Parameter[@name='ApiToken']").value="default"
-        $xml.Save($filePathToTask)
-        ${$filePathToTask}
+        ${{ inputs.check-out-path }}\.pshell\updateRSettings.ps1 ${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings develop http://awoha.xyz/ https://api.rawg.io/api/ ${{secrets.RAWG_KEY}} default false
     - name: 🕵️‍♀️ Run Tests
       shell: pwsh
       run: |
