@@ -6,12 +6,39 @@ on:
       check-out-path:
         required: true
         type: string
+      branch:
+        required: true
+        type: string
+      zephyr-IsPublishResults:
+        required: false
+        type: string
+      zephyr-ProjectKey:
+        required: false
+        type: string
+      zephyr-CycleName:
+        required: false
+        type: string
+      zephyr-CycleComment:
+        required: false
+        type: string
+    secrets:
+      instance-ui-url:
+        required: true
+      instance-backend-url:
+        required: true
+      instance-backend-api-key:
+        required: true
+      instance-backend-api-token:
+        required: true
+      zephyr-Token:
+        required: false
 
 jobs:
   dotnettests_job:
     name: 🔻⏭️🔧⏭️🏗️ ⏭️ 🕵️‍♀️ ⏭️ 🧪 
     env:
       tests_result_dir: ${{ inputs.check-out-path }}/testResults
+      runsettings_config_path: ${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings
     runs-on: ubuntu-latest
     permissions:
         contents: read
@@ -44,11 +71,21 @@ jobs:
     - name: 🔧 Update .runsettings
       shell: pwsh
       run: |
-        ${{ inputs.check-out-path }}\.pshell\updateRSettings.ps1 ${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings develop http://awoha.xyz/ https://api.rawg.io/api/ ${{secrets.RAWG_KEY}} default false
+        ${{inputs.check-out-path}}\.pshell\updateRSettings.ps1 
+        ${{env.runsettings_config_path}} 
+        ${{inputs.branch}} 
+        ${{secrets.instance-ui-url}} 
+        ${{secrets.instance-backend-url}} 
+        ${{secrets.instance-backend-api-key}} 
+        ${{secrets.instance-backend-api-key}} 
+        ${{inputs.zephyr-IsPublishResults}}
+        ${{inputs.zephyr-ProjectKey}}
+        ${{inputs.zephyr-CycleName}}
+        ${{inputs.zephyr-CycleComment}}
     - name: 🕵️‍♀️ Run Tests
       shell: pwsh
       run: |
-        dotnet test ${{ inputs.check-out-path }}/RegressionTests/bin/Release/net7.0/RegressionTests.dll --results-directory ${{ env.tests_result_dir }}/ --logger "trx;logfilename=testResults.trx" --settings "${{ inputs.check-out-path }}/TestsConfigurator/RunSettings/InstanceSettings.runsettings"
+        dotnet test ${{ inputs.check-out-path }}/RegressionTests/bin/Release/net7.0/RegressionTests.dll --results-directory ${{ env.tests_result_dir }}/ --logger "trx;logfilename=testResults.trx" --settings "${{ env.runsettings_config_path }}"
     - name: 🧪 Publish Tests Results
       if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0
